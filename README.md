@@ -11,7 +11,7 @@ Quentin F. Gronau, Alexandra Sarafoglou, Dora Matzke, Alexander Ly, Udo Boehm, M
 ## Basic usage
 The function `bridgesampling` estimates the log marginal likelihood with bridge sampling, given a matrix of posterior samples and an unnormalized log posterior function.
 ```julia
-using BridgeSampling
+using BridgeSampling, Distributions
  # Bivariate standard normal distribution
 samples = rand(MvNormal(ones(2)), 10_000)
 log_posterior(x) = -0.5 * x' * x
@@ -57,8 +57,8 @@ end
 # Sample
 M0 = H0(y)
 M1 = H1(y)
-chn0 = sample(M0, NUTS(), MCMCThreads(), 50_000, 3, burnin=2000)
-chn1 = sample(M1, NUTS(), MCMCThreads(), 50_000, 3, burnin=2000)
+chn0 = sample(M0, NUTS(), MCMCThreads(), 50_000, 3)
+chn1 = sample(M1, NUTS(), MCMCThreads(), 50_000, 3)
 
 # Estimate log marginal likelihood : directly with the DynamicPPL model 
 L0 = bridgesampling(chn0, M0)
